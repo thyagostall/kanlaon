@@ -1,52 +1,19 @@
+import { KanLaonApplication } from './kanlaon_application';
+import { SaveTimeCardAction } from './save_timecard_action';
+
 document.querySelector("#time-card input[type=submit]").addEventListener('click', saveTimeCard);
 
 let counter = 0;
 
-class ApplicationState {
-  constructor() {
-    this.observers = [];
-  }
-
-  performAction(action) {
-    action.execute(this);
-  }
-
-  registerObserver(callback) {
-    this.observers.push(callback);
-  }
-
-  notifyObservers(event) {
-    this.observers.forEach(observer => observer(event));
-  }
-}
-
-class SaveTimeCardAction {
-  constructor(id, day, startTime, endTime) {
-    this.id = id;
-    this.day = day;
-    this.startTime = startTime;
-    this.endTime = endTime;
-    this.finished = false;
-  }
-
-  execute(applicationState) {
-    applicationState.notifyObservers(this);
-    setTimeout(() => {
-      this.finished = true;
-      applicationState.notifyObservers(this);
-    }, 2000);
-  }
-}
-
-const applicationState = new ApplicationState();
-applicationState.registerObserver(updateTimeCardAction);
+const kanLaon = new KanLaonApplication();
+kanLaon.registerObserver(updateTimeCardAction);
 
 function saveTimeCard(e) {
   const day = document.querySelector('#time-card input[name=day]').value;
   const startTime = document.querySelector('#time-card input[name=start-time]').value;
   const endTime = document.querySelector('#time-card input[name=end-time]').value;
 
-  applicationState.performAction(new SaveTimeCardAction(counter++, day, startTime, endTime));
+  kanLaon.perform(new SaveTimeCardAction(counter++, day, startTime, endTime));
 
   e.preventDefault();
 }
