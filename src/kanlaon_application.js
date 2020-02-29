@@ -1,6 +1,7 @@
 export class KanLaonApplication {
   constructor() {
     this.observers = [];
+    this.state = [];
   }
 
   perform(action) {
@@ -11,11 +12,7 @@ export class KanLaonApplication {
     this.observers.push(callback);
   }
 
-  notifyObservers(event) {
-    this.observers.forEach(observer => observer(event));
-  }
-
-  saveTimeCard(timecard) {
-    this.notifyObservers(timecard);
+  notifyObservers() {
+    this.observers.forEach(observer => observer(this.state));
   }
 }

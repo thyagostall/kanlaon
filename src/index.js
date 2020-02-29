@@ -3,27 +3,51 @@ import { SaveTimeCardAction } from './save_timecard_action';
 
 document.querySelector("#time-card input[type=submit]").addEventListener('click', saveTimeCard);
 
-let counter = 0;
+document.querySelector('tbody#time-card').addEventListener('click', focusOnForm);
+
+function focusOnForm(e) {
+  document.querySelector('#modal-form input[name=day]').focus();
+
+  e.preventDefault();
+};
 
 const kanLaon = new KanLaonApplication();
-kanLaon.registerObserver(updateTimeCardAction);
+kanLaon.registerObserver(refreshState);
+kanLaon.state = {
+  timecards: [
+    {day: 1, startTime: '08:00', endTime: '12:00'},
+    {day: 1, startTime: '13:00', endTime: '18:00'},
+    {day: 2, startTime: '08:00', endTime: '12:00'},
+    {day: 2, startTime: '13:00', endTime: '18:00'},
+    {day: 3, startTime: '08:00', endTime: '12:00'},
+    {day: 3, startTime: '13:00', endTime: '18:00'},
+    {day: 4, startTime: '08:00', endTime: '12:00'},
+    {day: 4, startTime: '13:00', endTime: '18:00'}
+  ]
+}
+kanLaon.notifyObservers();
 
 function saveTimeCard(e) {
   const day = document.querySelector('#time-card input[name=day]').value;
   const startTime = document.querySelector('#time-card input[name=start-time]').value;
   const endTime = document.querySelector('#time-card input[name=end-time]').value;
 
-  kanLaon.perform(new SaveTimeCardAction(counter++, day, startTime, endTime));
+  kanLaon.perform(new SaveTimeCardAction(day, startTime, endTime));
 
   e.preventDefault();
 }
 
-function updateTimeCardAction(timecard) {
-  console.log(timecard);
-  let row = document.querySelector(`tr[data-id="${timecard.id}"]`);
+function refreshState(state) {
+  for (const timecard of state.timecards) {
+    updateTimeCard(timecard);
+  }
+}
+
+function updateTimeCard(timecard) {
+  let row = document.querySelector(`tr[data-id="${timecard.day}-${timecard.startTime}-${timecard.endTime}"]`);
   if (!row) {
     row = document.createElement('tr');
-    row.dataset.id = timecard.id;
+    row.dataset.id = `${timecard.day}-${timecard.startTime}-${timecard.endTime}`;
 
     const dayColumn = document.createElement('td');
     dayColumn.dataset.fieldName = 'day';
@@ -47,9 +71,9 @@ function updateTimeCardAction(timecard) {
   row.querySelector('td[data-field-name="end-time"]').textContent = timecard.endTime;
 
   if (!timecard.finished) {
-    row.className = 'performing-action-row';
+    row.className = 'text-center performing-action-row';
   } else {
-    row.className = '';
+    row.className = 'text-center';
   }
 }
 

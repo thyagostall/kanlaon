@@ -1,6 +1,5 @@
 export class SaveTimeCardAction {
-  constructor(id, day, startTime, endTime) {
-    this.id = id;
+  constructor(day, startTime, endTime) {
     this.day = day;
     this.startTime = startTime;
     this.endTime = endTime;
@@ -8,6 +7,12 @@ export class SaveTimeCardAction {
   }
 
   execute(app) {
-    app.saveTimeCard(this);
+    app.state.timecards.push({
+      day: this.day,
+      startTime: this.startTime,
+      endTime: this.endTime
+    });
+
+    app.notifyObservers();
   }
 }
