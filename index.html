@@ -6,34 +6,41 @@
 
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://bootswatch.com/4/pulse/bootstrap.min.css">
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
-  <title>Kan-Laon</title>
+  <title>KanLaon</title>
 </head>
 <body>
   <div class="container">
-    <div class="col-12 col-md-10 offset-md-1">
+    <div class="col-12-md">
       <div class="row">
-        <div class="card m-1 bg-light" id="modal-form">
-          <form id="time-card" class="form-inline m-3 mx-auto">
-            <div class="form-group mr-2">
-              <input type="number" name="day" class="form-control">
-            </div>
-            <div class="form-group mr-1">
-              <input type="time" name="start-time" class="form-control">
-            </div>
-            <div class="form-group ml-1 mr-3">
-              <input type="time" name="end-time" class="form-control">
-            </div>
-            <input type="submit" value="Save" class="btn btn-primary">
-          </form>
+        <div class="div mx-auto">
+          <div class="card p-3 mt-3 mb-3">
+            <form action="#" id="time-card-form" class="form form-inline">
+              <div class="form-group mr-2">
+                <input type="time" name="start-time" id="start-time-input" class="form-control" disabled>
+              </div>
+              <div class="form-group mr-2">
+                <input type="time" name="end-time" id="end-time-input" class="form-control" disabled>
+              </div>
+              <div class="form-group mr-2">
+                <input type="time" name="break-duration" id="break-duration-input" class="form-control" disabled>
+              </div>
+              <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-primary" disabled>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
       <div class="row">
-        <table class="table table-sm table-striped">
+        <table class="table table-sm table-striped mt-3">
           <thead>
-            <th class="text-center">Day</th>
+            <th>Day</th>
             <th class="text-center">Start Time</th>
             <th class="text-center">End Time</th>
+            <th class="text-center">Break Duration</th>
+            <th class="text-center">Edit</th>
           </thead>
           <tbody id="time-card">
           </tbody>

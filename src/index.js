@@ -1,79 +1,96 @@
 import { KanLaonApplication } from './kanlaon_application';
-import { SaveTimeCardAction } from './save_timecard_action';
 
-document.querySelector("#time-card input[type=submit]").addEventListener('click', saveTimeCard);
+const kanLaon = new KanLaonApplication((state, action) => {
+  if (action.type === 'add-timecard') {
+    state.push(action.timecard);
+  }
+});
 
-document.querySelector('tbody#time-card').addEventListener('click', focusOnForm);
-
-function focusOnForm(e) {
-  document.querySelector('#modal-form input[name=day]').focus();
-
-  e.preventDefault();
-};
-
-const kanLaon = new KanLaonApplication();
-kanLaon.registerObserver(refreshState);
-kanLaon.state = {
-  timecards: [
-    {day: 1, startTime: '08:00', endTime: '12:00'},
-    {day: 1, startTime: '13:00', endTime: '18:00'},
-    {day: 2, startTime: '08:00', endTime: '12:00'},
-    {day: 2, startTime: '13:00', endTime: '18:00'},
-    {day: 3, startTime: '08:00', endTime: '12:00'},
-    {day: 3, startTime: '13:00', endTime: '18:00'},
-    {day: 4, startTime: '08:00', endTime: '12:00'},
-    {day: 4, startTime: '13:00', endTime: '18:00'}
-  ]
-}
-kanLaon.notifyObservers();
-
-function saveTimeCard(e) {
-  const day = document.querySelector('#time-card input[name=day]').value;
-  const startTime = document.querySelector('#time-card input[name=start-time]').value;
-  const endTime = document.querySelector('#time-card input[name=end-time]').value;
-
-  kanLaon.perform(new SaveTimeCardAction(day, startTime, endTime));
-
-  e.preventDefault();
-}
-
-function refreshState(state) {
-  for (const timecard of state.timecards) {
+kanLaon.subscribe((app) => {
+  const timecards = app.getState();
+  for (let timecard of timecards) {
     updateTimeCard(timecard);
   }
-}
+});
+
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-02-21', startTime: '07:30', endTime: '16:20', breakDuration: '01:00'}});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-02-22', }});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-02-23', }});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-02-24', }});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-02-25', }});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-02-26', startTime: '07:54', endTime: '18:43', breakDuration: '01:00'}});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-02-27', startTime: '07:42', endTime: '18:25', breakDuration: '01:00'}});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-02-28', startTime: '10:59', endTime: '21:50', breakDuration: '01:00'}});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-02-29', }});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-01', }});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-02', startTime: '07:30', endTime: '18:00', breakDuration: '01:00'}});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-03', startTime: '06:50', endTime: '15:40', breakDuration: '01:00'}});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-04', startTime: '07:30', endTime: '18:00', breakDuration: '01:00'}});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-05', startTime: '07:30', endTime: '18:00', breakDuration: '01:00'}});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-06', startTime: '06:50', endTime: '15:40', breakDuration: '01:00'}});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-07', }});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-08', }});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-09', startTime: '07:30', endTime: '18:00', breakDuration: '01:00'}});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-10', startTime: '06:50', endTime: '15:40', breakDuration: '01:00'}});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-11', startTime: '07:30', endTime: '18:00', breakDuration: '01:00'}});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-12', startTime: '07:30', endTime: '18:00', breakDuration: '01:00'}});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-13', startTime: '06:50', endTime: '15:40', breakDuration: '01:00'}});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-14', }});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-15', }});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-16', startTime: '07:30', endTime: '18:00', breakDuration: '01:00'}});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-17', startTime: '06:50', endTime: '15:40', breakDuration: '01:00'}});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-18', startTime: '07:30', endTime: '18:00', breakDuration: '01:00'}});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-19', startTime: '07:30', endTime: '17:28', breakDuration: '01:00'}});
+kanLaon.dispatch({type: 'add-timecard', timecard: {date: '2020-03-20', startTime: '06:50', endTime: '15:40', breakDuration: '01:00'}});
 
 function updateTimeCard(timecard) {
-  let row = document.querySelector(`tr[data-id="${timecard.day}-${timecard.startTime}-${timecard.endTime}"]`);
+  let row = document.querySelector(`tr[data-id="${timecard.date}|${timecard.startTime}|${timecard.endTime}"]`);
   if (!row) {
-    row = document.createElement('tr');
-    row.dataset.id = `${timecard.day}-${timecard.startTime}-${timecard.endTime}`;
-
-    const dayColumn = document.createElement('td');
-    dayColumn.dataset.fieldName = 'day';
-
-    const startTimeColumn = document.createElement('td');
-    startTimeColumn.dataset.fieldName = 'start-time';
-
-    const endTimeColumn = document.createElement('td');
-    endTimeColumn.dataset.fieldName = 'end-time';
-
-    row.appendChild(dayColumn);
-    row.appendChild(startTimeColumn);
-    row.appendChild(endTimeColumn);
+    row = createNewRow(`${timecard.date}|${timecard.startTime}|${timecard.endTime}`);
 
     const table = document.querySelector('tbody#time-card');
     table.appendChild(row);
   }
 
-  row.querySelector('td[data-field-name="day"]').textContent = timecard.day;
+  const day = timecard.date.match(/(\d{4})-(\d{2})-(\d{2})/)[3];
+  row.querySelector('td[data-field-name="day"]').textContent = day;
   row.querySelector('td[data-field-name="start-time"]').textContent = timecard.startTime;
   row.querySelector('td[data-field-name="end-time"]').textContent = timecard.endTime;
+  row.querySelector('td[data-field-name="break-duration"]').textContent = timecard.breakDuration;
 
-  if (!timecard.finished) {
-    row.className = 'text-center performing-action-row';
-  } else {
-    row.className = 'text-center';
+  if (timecard.finished) {
+    row.className = 'performing-action-row';
   }
 }
 
+function createNewRow(id) {
+  const row = document.createElement('tr');
+  row.dataset.id = id;
+
+  const dayColumn = document.createElement('td');
+  dayColumn.dataset.fieldName = 'day';
+
+  const startTimeColumn = document.createElement('td');
+  startTimeColumn.dataset.fieldName = 'start-time';
+  startTimeColumn.className = 'text-center';
+
+  const endTimeColumn = document.createElement('td');
+  endTimeColumn.dataset.fieldName = 'end-time';
+  endTimeColumn.className = 'text-center';
+
+  const breakDurationColumn = document.createElement('td');
+  breakDurationColumn.dataset.fieldName = 'break-duration';
+  breakDurationColumn.className = 'text-center';
+
+  const editColumn = document.createElement('td');
+  editColumn.className = 'text-center';
+  editColumn.innerHTML = `<i class="fa fa-edit"></i>`;
+
+  row.appendChild(dayColumn);
+  row.appendChild(startTimeColumn);
+  row.appendChild(endTimeColumn);
+  row.appendChild(breakDurationColumn);
+  row.appendChild(editColumn);
+
+  return row;
+}

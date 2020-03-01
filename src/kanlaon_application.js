@@ -1,18 +1,21 @@
 export class KanLaonApplication {
-  constructor() {
-    this.observers = [];
+  constructor(dispatchHandler) {
+    this.subscribers = [];
     this.state = [];
+
+    this.dispatchHandler = dispatchHandler;
   }
 
-  perform(action) {
-    action.execute(this);
+  subscribe(callback) {
+    this.subscribers.push(callback);
   }
 
-  registerObserver(callback) {
-    this.observers.push(callback);
+  dispatch(action) {
+    this.dispatchHandler(this.state, action);
+    this.subscribers.forEach(callback => callback(this));
   }
 
-  notifyObservers() {
-    this.observers.forEach(observer => observer(this.state));
+  getState() {
+    return this.state;
   }
 }
