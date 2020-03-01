@@ -17,6 +17,7 @@
         <div class="div mx-auto">
           <div class="card p-3 mt-3 mb-3">
             <form action="#" id="time-card-form" class="form form-inline">
+              <input type="hidden" name="date">
               <div class="form-group mr-2">
                 <input type="time" name="start-time" id="start-time-input" class="form-control" disabled>
               </div>
@@ -27,7 +28,7 @@
                 <input type="time" name="break-duration" id="break-duration-input" class="form-control" disabled>
               </div>
               <div class="form-group">
-                <input type="submit" value="Submit" class="btn btn-primary" disabled>
+                <input type="submit" value="Save" class="btn btn-primary" disabled>
               </div>
             </form>
           </div>
@@ -42,7 +43,7 @@
             <th class="text-center">Break Duration</th>
             <th class="text-center">Edit</th>
           </thead>
-          <tbody id="time-card">
+          <tbody id="time-card-table">
           </tbody>
         </table>
       </div>
