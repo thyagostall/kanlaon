@@ -1,6 +1,15 @@
 import { KanLaonApplication } from './kanlaon_application';
+import { FormTimecard } from './form_timecard';
 
-const form = document.querySelector('#time-card-form');
+const form = new FormTimecard(() => {
+  const timecard = form.getData();
+
+  kanLaon.dispatch({ type: 'update-timecard', timecard: timecard });
+  setTimeout(() => {
+    timecard.finished = true;
+    kanLaon.dispatch({ type: 'update-timecard', timecard: timecard });
+  }, 2000);
+});
 
 const tableBody = document.querySelector('#time-card-table');
 tableBody.addEventListener('click', (e) => {
@@ -12,73 +21,21 @@ tableBody.addEventListener('click', (e) => {
   e.preventDefault();
 });
 
-const submitButton = form.querySelector('input[type=submit]');
-submitButton.addEventListener('click', (e) => {
-  const date = form.querySelector('input[name="date"]').value;
-  const startTime = form.querySelector('input[name="start-time"]').value;
-  const endTime = form.querySelector('input[name="end-time"]').value;
-  const breakDuration = form.querySelector('input[name="break-duration"]').value;
-
-  const timecard = {
-    date: date,
-    startTime: startTime,
-    endTime: endTime,
-    breakDuration: breakDuration
-  }
-
-  kanLaon.dispatch({ type: 'update-timecard', timecard: timecard });
-  setTimeout(() => {
-    timecard.finished = true;
-    kanLaon.dispatch({ type: 'update-timecard', timecard: timecard });
-  }, 2000);
-
-  e.preventDefault();
-});
-
 const kanLaon = new KanLaonApplication((state, action) => {
   if (action.type === 'add-timecard') {
     state.push(action.timecard);
   } else if (action.type === 'edit-timecard') {
     const timecard = state.find(element => element.date === action.timecardId);
 
-    const idField = form.querySelector('input[name="date"]');
-    idField.value = timecard.date;
-
-    const startTimeField = form.querySelector('input[name="start-time"]');
-    startTimeField.disabled = false;
-    startTimeField.value = timecard.startTime;
-
-    const endTimeField = form.querySelector('input[name="end-time"]');
-    endTimeField.disabled = false;
-    endTimeField.value = timecard.endTime;
-
-    const breakDurationField = form.querySelector('input[name="break-duration"]');
-    breakDurationField.disabled = false;
-    breakDurationField.value = timecard.breakDuration;
-
-    const submitButton = form.querySelector('input[type=submit]');
-    submitButton.disabled = false;
+    form.setData(timecard);
+    form.enable();
+    form.focus();
   } else if (action.type === 'update-timecard') {
     const index = state.findIndex(element => element.date === action.timecard.date);
     state.splice(index, 1, action.timecard);
 
-    const idField = form.querySelector('input[name="date"]');
-    idField.value = '';
-
-    const startTimeField = form.querySelector('input[name="start-time"]');
-    startTimeField.disabled = true;
-    startTimeField.value = '';
-
-    const endTimeField = form.querySelector('input[name="end-time"]');
-    endTimeField.disabled = true;
-    endTimeField.value = '';
-
-    const breakDurationField = form.querySelector('input[name="break-duration"]');
-    breakDurationField.disabled = true;
-    breakDurationField.value = '';
-
-    const submitButton = form.querySelector('input[type=submit]');
-    submitButton.disabled = true;
+    form.clear();
+    form.disable();
   }
 });
 
